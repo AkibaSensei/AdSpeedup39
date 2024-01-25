@@ -5,7 +5,7 @@ Youtube広告の高速化と自動スキップするだけの拡張機能です�
   
 - ファイル一式をローカルに保存してChromeの拡張機能で読み込むことで機能するようになります。  
 保存先の例：  
-C:\Users\yaki\Documents\extensions\AdSpeedup39  
+C:\Users\ユーザー名\Documents\extensions\AdSpeedup39  
   
   
 - ローカル上の拡張機能の導入に関しては一連の流れが必要です。
