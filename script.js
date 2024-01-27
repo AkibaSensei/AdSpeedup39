@@ -1,5 +1,6 @@
 const PLAYBACK_RATE_MAX = 16;
-let currentPlaybackRate = 0;
+let currentMuted = false;
+let currentPlaybackRate = 1;
 function adSpeedup(video) {
 	const callback = (mutations) => {
 		mutations.forEach((mutation) => {
@@ -13,11 +14,13 @@ function adSpeedup(video) {
 				}
 			}
 		});
-		video.muted = movie_player.classList.contains("ad-showing") || movie_player.classList.contains("ad-interrupting");
 		if (video.playbackRate !== PLAYBACK_RATE_MAX) {
+			currentMuted = video.muted;
 			currentPlaybackRate = video.playbackRate;
 		}
-		video.playbackRate = video.muted ? PLAYBACK_RATE_MAX : currentPlaybackRate;
+		const isAdShowing = movie_player.classList.contains("ad-showing") || movie_player.classList.contains("ad-interrupting");
+		video.muted = isAdShowing ? true : currentMuted;
+		video.playbackRate = isAdShowing ? PLAYBACK_RATE_MAX : currentPlaybackRate;
 	}
 	new MutationObserver(callback).observe(movie_player, {
 		attributeFilter: ["class", "style"],
