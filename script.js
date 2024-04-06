@@ -1,19 +1,24 @@
 const PLAYBACK_RATE_MAX = 16;
+const IS_SKIP_AD = true;
 let currentMuted = false;
 let currentPlaybackRate = 1;
 function adSpeedup(video) {
 	const callback = (mutations) => {
-		mutations.forEach((mutation) => {
-			if (mutation.attributeName === "style") {
-				const skipButtonContainer = document.querySelector(".ytp-ad-skip-button-container");
-				if (skipButtonContainer && skipButtonContainer?.style.display !== "none") {
-					const skipButton = skipButtonContainer.querySelector(".ytp-ad-skip-button-modern");
-					if (skipButton) {
-						skipButton.click();
-					}
+		if (IS_SKIP_AD) {
+			mutations.forEach((mutation) => {
+				if (mutation.attributeName !== "style") {
+					return;
 				}
-			}
-		});
+				const skipButtonContainer = document.querySelector(".ytp-skip-ad");
+				if (!skipButtonContainer || skipButtonContainer.style.display === "none") {
+					return;
+				}
+				const skipButton = skipButtonContainer.querySelector(".ytp-skip-ad > .ytp-skip-ad-button");
+				if (skipButton) {
+					skipButton.click();
+				}
+			});
+		}
 		if (video.playbackRate !== PLAYBACK_RATE_MAX) {
 			currentMuted = video.muted;
 			currentPlaybackRate = video.playbackRate;
