@@ -5,18 +5,21 @@ let currentPlaybackRate = 1;
 function adSpeedup(video) {
 	const callback = (mutations) => {
 		if (IS_SKIP_AD) {
+			const clickSkipButton = (container, button) => {
+				const skipButtonContainer = document.querySelector(container);
+				if (skipButtonContainer && skipButtonContainer.style.display !== "none") {
+					const skipButton = skipButtonContainer.querySelector(container + " > " + button);
+					if (skipButton) {
+						skipButton.click();
+					}
+				}
+			}
 			mutations.forEach((mutation) => {
 				if (mutation.attributeName !== "style") {
 					return;
 				}
-				const skipButtonContainer = document.querySelector(".ytp-skip-ad");
-				if (!skipButtonContainer || skipButtonContainer.style.display === "none") {
-					return;
-				}
-				const skipButton = skipButtonContainer.querySelector(".ytp-skip-ad > .ytp-skip-ad-button");
-				if (skipButton) {
-					skipButton.click();
-				}
+				clickSkipButton(".ytp-ad-skip-button-container", ".ytp-ad-skip-button-modern");
+				clickSkipButton(".ytp-skip-ad", ".ytp-skip-ad-button");
 			});
 		}
 		if (video.playbackRate !== PLAYBACK_RATE_MAX) {
